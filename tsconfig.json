@@ -17,8 +17,26 @@
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitThis": true,
     "target": "ES2022",
     "module": "ES2022",
+    "paths": {
+      "@pages/*": [
+        "./src/app/components/pages/*"
+      ],
+      "@services/*": [
+        "./src/app/services/*"
+      ],
+      "@app/*": [
+        "./src/app/*"
+      ],
+    },
     "lib": [
       "ES2022",
       "dom"

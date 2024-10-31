@@ -1,0 +1,4 @@
+.input.input-bordered:has(input.ng-touched.ng-pristine),
+.input.input-bordered:has(input.ng-touched.ng-invalid) {
+    border: 2px solid red !important;
+}
