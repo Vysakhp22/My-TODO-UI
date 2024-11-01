@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { ToastService } from '@services/toast.service';
 import { ToastModule } from 'primeng/toast';
 
@@ -25,11 +25,26 @@ export class LoginComponent {
   });
 
   protected onSubmit(): void {
+    this.loginForm.markAllAsTouched();
     const toast = this.toastService.showToast();
     if (this.loginForm.valid) {
       toast.success('Login successful');
     } else {
-      toast.warn('Please fill all the fields');
+      Object.values(this.loginForm.controls).forEach((control: AbstractControl) => {
+        if (control.errors) {
+          Object.keys(control.errors).forEach((error: string) => {
+            switch (error) {
+              case 'required':
+                toast.warn('Please fill in all fields');
+                break;
+              case 'email':
+                toast.warn('Please enter a valid email');
+                break;
+            }
+          }
+          );
+        }
+      });
     }
   }
 }
