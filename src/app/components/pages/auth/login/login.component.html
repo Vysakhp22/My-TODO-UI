@@ -1,4 +1,5 @@
 <div class="flex items-center justify-center min-h-screen bg-gray-100 relative">
+    <!-- Login Form -->
     <div class="card bg-base-100 w-96 shadow-xl">
         <div class="card-body">
             <h2 class="card-title">Login</h2>
@@ -24,9 +25,59 @@
                         <input type="password" class="grow" placeholder="Password" formControlName="password" />
                     </label>
                     <button class="btn btn-primary w-full" type="submit" (click)="onSubmit()">Login</button>
-                    <button class="btn btn-accent w-full">Register</button>
+                    <button class="btn btn-accent w-full" onclick="my_modal_5.showModal()">Register</button>
                 </div>
             </form>
         </div>
     </div>
+    <!-- User Register -->
+    <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 class="text-lg font-bold">Wecome to TODO!</h3>
+            <form [formGroup]="registerForm" method="dialog" class="flex flex-col gap-3 justify-center">
+                <button class="btn btn-sm btn-circle btn-outline btn-ghost absolute right-2 top-2" (click)="registerForm.reset()">✕</button>
+                <label class="form-control w-full">
+                    <div class="label">
+                        <span class="label-text font-semibold">Enter your name</span>
+                    </div>
+                    <input formControlName="name" type="text" placeholder="Enter your name" class="input input-bordered border-2 w-full" [ngClass]="{'border-rose-500': registerForm.get('name')?.hasError('required')}" />
+                    @if (registerForm.get('name')?.hasError('required') && registerForm.get('name')?.touched) {
+                    <span class="label-text-alt text-red-500 mt-[2px] mr-1">Name is required</span>
+                    }
+                </label>
+                <label class="form-control w-full">
+                    <div class="label">
+                        <span class="label-text font-semibold">Enter your email</span>
+                    </div>
+                    <input formControlName="email" type="email" placeholder="Enter your email" class="input input-bordered border-2 w-full" [ngClass]="{'border-rose-500': registerForm.get('email')?.hasError('required')}"/>
+                    @if (registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
+                    <span class="label-text-alt text-red-500 mt-[2px] mr-1">Email is required</span>
+                    } @else if (registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
+                    <span class="label-text-alt text-red-500 mt-[2px] mr-1">Invalid Email</span>
+                    }
+                </label>
+                <label class="form-control w-full">
+                    <div class="label">
+                        <span class="label-text font-semibold">Enter your password</span>
+                    </div>
+                    <input type="password" formControlName="password" placeholder="Enter your password" class="input input-bordered border-2 w-full" [ngClass]="{'border-rose-500': registerForm.get('password')?.hasError('required')}"/>
+                    @if (registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched) {
+                    <span class="label-text-alt text-red-500 mt-[2px] mr-1">Password is required</span>
+                    }
+                </label>
+                <label class="form-control w-full">
+                    <div class="label">
+                        <span class="label-text font-semibold">Enter your confirm password</span>
+                    </div>
+                    <input type="password" formControlName="confirmPassword" placeholder="Enter your confirm password" class="input input-bordered border-2 w-full" [ngClass]="{'border-rose-500': registerForm.get('confirmPassword')?.hasError('required')}" />
+                    @if (registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched) {
+                    <span class="label-text-alt text-red-500 mt-[2px] mr-1">Confirm password is required</span>
+                    } @else if (registerForm.hasError('password') && registerForm.get('confirmPassword')?.touched) {
+                        <span class="label-text-alt text-red-500 mt-[2px] mr-1">Password does not match</span>
+                    }
+                </label>
+                <button class="btn btn-primary" (click)="onRegister()">Register</button>
+            </form>
+        </div>
+    </dialog>
 </div>
