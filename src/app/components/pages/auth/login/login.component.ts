@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule, AbstractControl, FormsModule, ValidatorFn } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastService } from '@services/toast.service';
 import { ToastModule } from 'primeng/toast';
 
@@ -14,6 +15,7 @@ import { ToastModule } from 'primeng/toast';
 export class LoginComponent {
 
   private toastService = inject(ToastService);
+  private router = inject(Router);
   constructor(
   ) { }
 
@@ -47,6 +49,7 @@ export class LoginComponent {
     this.loginForm.markAllAsTouched();
     const toast = this.toastService.showToast();
     if (this.loginForm.valid) {
+      this.router.navigateByUrl('/my-tasks');
       toast.success('Login successful');
       this.loginForm.reset();
     } else {

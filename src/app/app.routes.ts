@@ -20,4 +20,14 @@ export const routes: Routes = [
             }
         ]
     },
+    {
+        path: '',
+        loadComponent: () => import('@app/components/common/layout/layout.component').then(m => m.LayoutComponent),
+        children: [
+            {
+                path: 'my-tasks',
+                loadComponent: () => import('@app/components/pages/task/task-list/task-list.component').then(m => m.TaskListComponent)
+            }
+        ]
+    }
 ];
