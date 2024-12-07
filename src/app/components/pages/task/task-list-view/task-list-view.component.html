@@ -1,7 +1,7 @@
 <div class="w-full">
-    <p-table [value]="tasks" class="w-full">
+    <p-table [value]="tasks">
         <ng-template pTemplate="header" let-columns>
-            <tr class="w-full">
+            <tr>
                 <th [width]="800">Task </th>
                 <th [width]="300">Priority</th>
                 <th [width]="300">Status</th>
@@ -13,13 +13,10 @@
                     {{taskItem.task}}
                 </td>
                 <td>
-                    <p-tag [value]="taskItem.priority" [severity]="getSeverity(taskItem.priority)" />
+                    <p-tag [value]="taskItem.priority" [severity]="getPrioritySeverity(taskItem.priority)" />
                 </td>
                 <td>
-                    <p-tag [value]="taskItem.status" [severity]="getSeverity(taskItem.status)" />
-                </td>
-                <td>
-                    <!-- <p-rating [(ngModel)]="product.rating" [readonly]="true" [cancel]="false" /> -->
+                    <p-tag [value]="taskItem.status" [severity]="getStatusSeverity(taskItem.status)" />
                 </td>
             </tr>
         </ng-template>

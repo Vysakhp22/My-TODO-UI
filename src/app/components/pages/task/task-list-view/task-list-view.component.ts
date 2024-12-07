@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { EPriorityValue, ETaskState } from '@app/models/common';
 import { RatingModule } from 'primeng/rating';
 import { TableModule } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
+import { Tag, TagModule } from 'primeng/tag';
 interface Column {
   field: string;
   header: string;
@@ -26,8 +27,6 @@ export class TaskListViewComponent {
   constructor() { }
 
   ngOnInit() {
-
-
     this.cols = [
       { field: 'code', header: 'Code' },
       { field: 'task', header: 'Task' },
@@ -36,16 +35,25 @@ export class TaskListViewComponent {
     ];
   }
 
-  public getSeverity(status: string) {
+  public getStatusSeverity(status: ETaskState): Tag['severity'] {
     switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
+      case ETaskState.Pending:
         return 'warning';
-      case 'OUTOFSTOCK':
+      case ETaskState.InProgress:
+        return 'info';
+      case ETaskState.Completed:
+        return 'success';
+    }
+  }
+
+  public getPrioritySeverity(priority: EPriorityValue): Tag['severity'] {
+    switch (priority) {
+      case EPriorityValue.Low:
+        return 'info';
+      case EPriorityValue.Medium:
+        return 'warning';
+      case EPriorityValue.High:
         return 'danger';
-      default:
-        return undefined
     }
   }
 }
