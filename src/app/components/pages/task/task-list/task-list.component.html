@@ -1,1 +1,46 @@
-<p>task-list works!</p>
+<div class="flex flex-col gap-6">
+    <div tabindex="0" class="collapse collapse-open border-base-300 bg-base-200 border"
+        [ngClass]="isCollapsed()? 'h-40	': ''">
+        <div class="collapse-title text-base font-medium text-[#7f97db]" (click)="toggleCollapse()">
+            <div *ngIf="!isCollapsed()" class="flex gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                    <path fill-rule="evenodd"
+                        d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span>Add a task</span>
+            </div>
+            <input *ngIf="isCollapsed()" tabindex="0" type="text" placeholder="Add a task"
+                class="input border-none w-full" (click)="$event.stopPropagation()" />
+        </div>
+        <div class="collapse-content flex justify-between custom-collapse" *ngIf="isCollapsed()">
+            <div class="flex gap-3 items-center">
+                <div class="flex gap-1 items-center">
+                    <label for="due">Due:</label>
+                    <p-calendar id="due" [iconDisplay]="'input'" appendTo="body" [showIcon]="true" inputId="icondisplay"
+                        class="relative todo-calender-input" />
+                </div>
+                <div class="flex gap-3 items-center">
+                    <label for="due">Priority:</label>
+                    <select class="select select-bordered select-sm w-full max-w-xs">
+                        @for (item of priorityOptions; track $index) {
+                        <option [value]="item.label">{{item.value}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="flex gap-3 items-center">
+                    <label for="due">Status:</label>
+                    <select class="select select-bordered select-sm w-full max-w-xs">
+                        @for (item of stateOptions; track $index) {
+                        <option [value]="item">{{item}}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-active btn-ghost">ADD</button>
+        </div>
+    </div>
+    <div class="w-full">
+        <app-task-list-view></app-task-list-view>
+    </div>
+</div>

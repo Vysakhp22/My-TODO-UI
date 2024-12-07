@@ -1,4 +1,4 @@
-<div class="h-full w-full flex">
+<div class="h-full w-full flex min-h-screen">
     <div class="bg-[#2d374e] w-48 h-[100vh] z-[1000] relative text-cyan-50">
         <div class="pt-10 flex flex-col gap-3 px-4">
             <span class="flex gap-2">
@@ -9,7 +9,7 @@
                 </svg>
                 My TODO
             </span>
-            <ul class="menu rounded-box">
+            <!-- <ul class="menu rounded-box">
                 <li>
                     <a>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -40,7 +40,7 @@
                         Item 3
                     </a>
                 </li>
-            </ul>
+            </ul> -->
         </div>
     </div>
     <div class="w-full h-full min-w-0 block flex-grow px-4">
@@ -61,8 +61,6 @@
                 </div>
             </div>
         </div>
-        <div class="w-full min-h-0">
-            <router-outlet class="block-expand-sibling"></router-outlet>
-        </div>
+        <router-outlet class="block-expand-sibling"></router-outlet>
     </div>
 </div>
