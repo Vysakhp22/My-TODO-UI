@@ -20,4 +20,4 @@ export class UserService {
   public userRegister(payload: TUserRegister): Observable<any> {
     return this.http.post(CommonRoute.register, payload);
   }
-  }
+}
