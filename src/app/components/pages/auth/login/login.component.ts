@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule, AbstractControl, FormsModule, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TUserLogin, TUserRegister } from '@app/models/common';
 import { ToastService } from '@services/toast.service';
+import { UserService } from '@services/user.service';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
@@ -13,11 +15,10 @@ import { ToastModule } from 'primeng/toast';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-
   private toastService = inject(ToastService);
   private router = inject(Router);
-  constructor(
-  ) { }
+  private userService = inject(UserService);
+  constructor() { }
 
   protected loginForm: FormGroup<{
     email: FormControl<string | null>;
@@ -49,7 +50,19 @@ export class LoginComponent {
     this.loginForm.markAllAsTouched();
     const toast = this.toastService.showToast();
     if (this.loginForm.valid) {
-      this.router.navigateByUrl('/my-tasks');
+      const payload: TUserLogin = {
+        email: this.loginForm.value.email!,
+        password: this.loginForm.value.password!
+      };
+      this.userService.userLogin(payload).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.router.navigateByUrl('/my-tasks');
+        },
+        error: (error: Error) => {
+          toast.error(error);
+        }
+      })
       toast.success('Login successful');
       this.loginForm.reset();
     } else {
@@ -75,10 +88,21 @@ export class LoginComponent {
     this.registerForm.markAllAsTouched();
     const toast = this.toastService.showToast();
     if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
-      
-      toast.success('Registration successful');
-      this.registerForm.reset();
+      const payload: TUserRegister = {
+        name: this.registerForm.value.name!,
+        email: this.registerForm.value.email!,
+        password: this.registerForm.value.password!
+      };
+      this.userService.userRegister(payload).subscribe({
+        next: (response) => {
+          console.log(response);
+          toast.success('Registration successful');
+          this.router.navigateByUrl('/auth/login');
+        },
+        error: (error: Error) => {
+          toast.error(error);
+        }
+      });
     }
   }
 }

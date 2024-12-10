@@ -20,3 +20,14 @@ export type TPriorities = {
     label: EPriorityLabel;
     value: EPriorityValue;
 }[];
+
+export type TUserRegister = {
+    name: string;
+    email: string;
+    password: string;
+}
+
+export type TUserLogin = {
+    email: string;
+    password: string;
+}
