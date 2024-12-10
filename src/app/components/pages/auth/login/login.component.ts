@@ -94,8 +94,11 @@ export class LoginComponent {
         password: this.registerForm.value.password!
       };
       this.userService.userRegister(payload).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           console.log(response);
+          if (response.token) {
+            localStorage.setItem('token', response.token);
+          }
           toast.success('Registration successful');
           this.router.navigateByUrl('/auth/login');
         },
