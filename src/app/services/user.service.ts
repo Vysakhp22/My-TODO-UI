@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class UserService {
 
   constructor(
-    private http: HttpClient,
+    private readonly http: HttpClient,
   ) { }
 
   public userLogin(payload: TUserLogin): Observable<any> {

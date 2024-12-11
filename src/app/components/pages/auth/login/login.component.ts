@@ -15,9 +15,9 @@ import { ToastModule } from 'primeng/toast';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  private toastService = inject(ToastService);
-  private router = inject(Router);
-  private userService = inject(UserService);
+  private readonly toastService = inject(ToastService);
+  private readonly router = inject(Router);
+  private readonly userService = inject(UserService);
   constructor() { }
 
   protected loginForm: FormGroup<{

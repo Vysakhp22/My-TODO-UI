@@ -11,4 +11,9 @@ import { RouterOutlet } from '@angular/router';
 })
 export class LayoutComponent {
 
+  protected logOut(): void {
+    localStorage.removeItem('token');
+    localStorage.clear();
+  }
+
 }
