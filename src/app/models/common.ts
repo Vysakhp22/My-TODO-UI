@@ -30,7 +30,7 @@ export type TTask = {
 }
 
 export type TTaskUpdate = {
-    id: number;
+    id: string;
     title: string;
     status: ETaskState;
     priority: EPriorityValue;

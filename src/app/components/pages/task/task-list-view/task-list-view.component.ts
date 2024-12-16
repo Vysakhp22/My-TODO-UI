@@ -3,6 +3,8 @@ import { EPriorityValue, ETaskState } from '@app/models/common';
 import { TableModule } from 'primeng/table';
 import { Tag, TagModule } from 'primeng/tag';
 import { CommonModule } from '@angular/common';
+import { TaskService } from '@services/task.service';
+import { ConfigData } from '@services/configdata.service';
 @Component({
   selector: 'app-task-list-view',
   standalone: true,
@@ -13,33 +15,43 @@ import { CommonModule } from '@angular/common';
 export class TaskListViewComponent {
   reload = input<boolean>();
   onEditId = output<string>();
-  products = [];
-  tasks = [
-    { code: 'A1', task: 'Task 1', priority: 'High', status: 'Completed' },
-    { code: 'A2', task: 'Task 2', priority: 'Medium', status: 'InProgress' },
-    { code: 'A3', task: 'Task 3', priority: 'Low', status: 'Pending' },
-    { code: 'A4', task: 'Task 4', priority: 'High', status: 'Completed' },
-    { code: 'A5', task: 'Task 5', priority: 'Medium', status: 'InProgress' },
-    { code: 'A6', task: 'Task 6', priority: 'Low', status: 'Pending' },
-    { code: 'A7', task: 'Task 7', priority: 'High', status: 'Completed' },
-    { code: 'A8', task: 'Task 8', priority: 'Medium', status: 'InProgress' },
-    { code: 'A9', task: 'Task 9', priority: 'Low', status: 'Pending' },
-    // { code: 'A10', task: 'Task 10', priority: 'High', status: 'Completed' }
-  ];
+  tasks: {
+    code: string;
+    task: string;
+    priority: string;
+    status: string;
+  }[] = [];
 
   public severityStyles = {
     'width': '50%',
-  }
+  };
 
-  constructor() {
+  constructor(
+    private taskService: TaskService,
+    private configData: ConfigData
+  ) {
     effect(() => {
       if (this.reload()) {
-        // #TODO: Implement the logic to reload the data
+        this.getAllTasks();
       }
     })
   }
 
   ngOnInit() {
+    this.getAllTasks();
+  }
+
+  private getAllTasks() {
+    this.taskService.taskListAsync(this.configData.userDetail.userId).subscribe({
+      next: (response: any) => {
+        this.tasks = response.map((task: any) => ({
+          code: task.id,
+          task: task.title,
+          priority: task.priority,
+          status: task.status
+        }));
+      }
+    });
   }
 
   public getStatusSeverity(status: ETaskState): Tag['severity'] {

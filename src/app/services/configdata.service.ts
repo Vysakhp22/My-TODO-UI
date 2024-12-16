@@ -6,7 +6,14 @@ import { TUserDetails } from '@app/models/common';
 })
 export class ConfigData {
 
-  constructor() { }
+  constructor() {
+    const userDetail = localStorage.getItem('userDetails');
+    console.log(userDetail);
+    
+    if (userDetail) {
+      this._userDetail = JSON.parse(userDetail);
+    }
+  }
 
   private _userDetail: TUserDetails = {
     userId: '',

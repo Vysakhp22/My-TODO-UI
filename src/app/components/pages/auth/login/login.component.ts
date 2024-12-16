@@ -59,6 +59,8 @@ export class LoginComponent {
       this.userService.userLogin(payload).subscribe({
         next: (response: TUserLoginResponse) => {
           console.log(response);
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('userDetails', JSON.stringify(response.userDetails));
           this.configData.userDetail = response.userDetails;
           this.router.navigateByUrl('/my-tasks');
         },
