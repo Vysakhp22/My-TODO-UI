@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule, AbstractControl, FormsModule, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TUserLogin, TUserRegister } from '@app/models/common';
+import { TUserLogin, TUserLoginResponse, TUserRegister } from '@app/models/common';
+import { ConfigData } from '@services/configdata.service';
 import { ToastService } from '@services/toast.service';
 import { UserService } from '@services/user.service';
 import { ToastModule } from 'primeng/toast';
@@ -18,6 +19,7 @@ export class LoginComponent {
   private readonly toastService = inject(ToastService);
   private readonly router = inject(Router);
   private readonly userService = inject(UserService);
+  private configData = inject(ConfigData);
   constructor() { }
 
   protected loginForm: FormGroup<{
@@ -55,8 +57,9 @@ export class LoginComponent {
         password: this.loginForm.value.password!
       };
       this.userService.userLogin(payload).subscribe({
-        next: (response) => {
+        next: (response: TUserLoginResponse) => {
           console.log(response);
+          this.configData.userDetail = response.userDetails;
           this.router.navigateByUrl('/my-tasks');
         },
         error: (error: Error) => {
