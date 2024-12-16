@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal, WritableSignal } from '@angular/core';
-import { EPriorityLabel, EPriorityValue, ETaskState, TPriorities } from '@app/models/common';
+import { EPriorityValue, ETaskState } from '@app/models/common';
 import { CalendarModule } from 'primeng/calendar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TaskListViewComponent } from "../task-list-view/task-list-view.component";
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ToastService } from '@services/toast.service';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, CalendarModule, SelectButtonModule, TaskListViewComponent],
+  imports: [CommonModule, CalendarModule, SelectButtonModule, TaskListViewComponent, ReactiveFormsModule],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss'
 })
@@ -30,13 +32,39 @@ export class TaskListComponent {
   }
   protected itemEditId: WritableSignal<string> = signal('');
   protected stateOptions = Object.values(ETaskState)
-  protected priorityOptions: TPriorities = [
-    { label: EPriorityLabel.P1, value: EPriorityValue.High },
-    { label: EPriorityLabel.P2, value: EPriorityValue.Medium },
-    { label: EPriorityLabel.P3, value: EPriorityValue.Low }
-  ];
+  protected priorityOptions = Object.values(EPriorityValue)
 
-  onSubmit() {
+
+  protected taskCreate = new FormGroup({
+    task: new FormControl('', [Validators.required]),
+    dueDate: new FormControl<Date | null>(new Date(), [Validators.required]),
+    priority: new FormControl<EPriorityValue | null>(EPriorityValue.Medium, [Validators.required]),
+    status: new FormControl<ETaskState | null>(ETaskState.Pending, [Validators.required]),
+  });
+  constructor(
+    private toast: ToastService,
+  ) { }
+
+  addTask() {
+    const toastMessage = this.toast.showToast();
+    console.log(this.taskCreate.value);
+    if (this.taskCreate.valid) {
+
+    } else {
+      if (this.taskCreate.get('task')?.hasError('required')) {
+        toastMessage.warn('Task is required');
+      }
+      if (this.taskCreate.get('dueDate')?.hasError('required')) {
+        toastMessage.warn('Due Date is required');
+      }
+      if (this.taskCreate.get('priority')?.hasError('required')) {
+        toastMessage.warn('Priority is required');
+      }
+      if (this.taskCreate.get('status')?.hasError('required')) {
+        toastMessage.warn('Status is required');
+      }
+    }
+
     this.reload.set(true);
     this.sidebar.set(false);
   }

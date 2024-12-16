@@ -1,4 +1,4 @@
-<div class="h-full w-full flex min-h-screen">
+
     <!-- <div class="bg-[#2d374e] w-48 h-[100vh] z-[1000] relative text-cyan-50">
         <div class="pt-10 flex flex-col gap-3 px-4">
             <span class="flex gap-2">
@@ -11,8 +11,8 @@
             </span>
         </div>
     </div> -->
-    <div class="w-full h-full min-w-0 block flex-grow px-4">
-        <div class="navbar z-[9999] justify-end relative">
+    <div class="w-full h-full px-4 flex flex-col">
+        <div class="navbar h-16 z-[99] justify-end relative">
             <div class="flex-none">
                 <div class="dropdown dropdown-end text-neutral-950">
                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
@@ -30,6 +30,7 @@
                 </div>
             </div>
         </div>
-        <router-outlet class="block-expand-sibling"></router-outlet>
+        <div class="flex-grow min-h-0">
+            <router-outlet class="block-expand-sibling"></router-outlet>
+        </div>
     </div>
-</div>

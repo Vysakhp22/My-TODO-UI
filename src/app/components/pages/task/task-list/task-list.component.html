@@ -1,53 +1,55 @@
 <div class="h-full w-full flex overflow-auto">
-    <div class="w-full h-full min-w-0 block flex-grow px-4">
+    <div class="w-full h-full flex-grow px-4">
         <div class="flex flex-col gap-6">
-            <div tabindex="0" class="collapse collapse-open border-base-300 bg-base-200 border"
-                [ngClass]="isCollapsed()? 'h-40	': ''">
-                <div class="collapse-title text-base font-medium text-[#7f97db]" (click)="toggleCollapse()">
-                    <div *ngIf="!isCollapsed()" class="flex gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                            <path fill-rule="evenodd"
-                                d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span>Add a task</span>
+            <form [formGroup]="taskCreate">
+                <div tabindex="0" class="collapse collapse-open border-base-300 bg-base-200 border"
+                    [ngClass]="isCollapsed()? 'h-40	': ''">
+                    <div class="collapse-title text-base font-medium text-[#7f97db]" (click)="toggleCollapse()">
+                        <div *ngIf="!isCollapsed()" class="flex gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                <path fill-rule="evenodd"
+                                    d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span>Add a task</span>
+                        </div>
+                        <input *ngIf="isCollapsed()" formControlName="task" tabindex="0" type="text" placeholder="Add a task"
+                            class="input border-none w-full" (click)="$event.stopPropagation()"/>
                     </div>
-                    <input *ngIf="isCollapsed()" tabindex="0" type="text" placeholder="Add a task"
-                        class="input border-none w-full" (click)="$event.stopPropagation()" />
-                </div>
-                <div class="collapse-content flex justify-between custom-collapse" *ngIf="isCollapsed()">
-                    <div class="flex gap-3 items-center">
-                        <div class="flex gap-1 items-center">
-                            <label for="due">Due:</label>
-                            <p-calendar id="due" [style]="calendarStyle" [iconDisplay]="'input'" appendTo="body" [showIcon]="true"
-                                inputId="icondisplay" class="input input-bordered input-sm w-full max-w-xs" />
-                        </div>
+                    <div class="collapse-content flex justify-between custom-collapse" *ngIf="isCollapsed()">
                         <div class="flex gap-3 items-center">
-                            <label for="due">Priority:</label>
-                            <select class="select select-bordered select-sm w-full max-w-xs">
-                                @for (item of priorityOptions; track $index) {
-                                <option [value]="item.label">{{item.value}}</option>
-                                }
-                            </select>
+                            <div class="flex gap-1 items-center">
+                                <label for="due">Due:</label>
+                                <p-calendar id="due" [style]="calendarStyle" formControlName="dueDate" [iconDisplay]="'input'" appendTo="body" [showIcon]="true"
+                                    inputId="icondisplay" class="input input-bordered input-sm w-full max-w-xs" />
+                            </div>
+                            <div class="flex gap-3 items-center">
+                                <label for="due">Priority:</label>
+                                <select class="select select-bordered select-sm w-full max-w-xs" formControlName="priority">
+                                    @for (item of priorityOptions; track $index) {
+                                    <option [value]="item">{{item}}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="flex gap-3 items-center">
+                                <label for="due">Status:</label>
+                                <select class="select select-bordered select-sm w-full max-w-xs" formControlName="status">
+                                    @for (item of stateOptions; track $index) {
+                                    <option [value]="item">{{item}}</option>
+                                    }
+                                </select>
+                            </div>
                         </div>
-                        <div class="flex gap-3 items-center">
-                            <label for="due">Status:</label>
-                            <select class="select select-bordered select-sm w-full max-w-xs">
-                                @for (item of stateOptions; track $index) {
-                                <option [value]="item">{{item}}</option>
-                                }
-                            </select>
-                        </div>
+                        <button class="btn btn-active btn-ghost" (click)="addTask()">ADD</button>
                     </div>
-                    <button class="btn btn-active btn-ghost">ADD</button>
                 </div>
-            </div>
+            </form>
             <div class="w-full">
                 <app-task-list-view [reload]="reload()" (onEditId)="itemEditId.set($event); sidebar.set(true)"></app-task-list-view>
             </div>
         </div>
     </div>
-    <div *ngIf="sidebar()" class="bg-slate-100 w-96 min-h-full z-[1000] relative">
+    <div *ngIf="sidebar()" class="bg-slate-100 w-96 relative">
         <div class="pt-10 flex flex-col gap-3 px-4">
             <span class="text-lg font-semibold">
                 My TODO
@@ -66,7 +68,7 @@
                     </div>
                     <select class="select select-bordered w-full max-w-xs">
                         @for (item of priorityOptions; track $index) {
-                        <option [value]="item.label">{{item.value}}</option>
+                        <option [value]="item">{{item}}</option>
                         }
                     </select>
                 </label>
