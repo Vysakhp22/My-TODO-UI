@@ -62,19 +62,27 @@
             <span class="text-lg font-semibold">
                 My TODO
             </span>
-            <div>
+            <form [formGroup]="updateTask">
+                <label class="form-control w-full max-w-xs">
+                    <div class="label">
+                        <span class="label-text font-semibold">Task</span>
+                    </div>
+                    <input type="text" placeholder="Task" formControlName="task"
+                        class="input input-bordered w-full max-w-xs" />
+                </label>
                 <label class="form-control w-full max-w-xs">
                     <div class="label">
                         <span class="label-text font-semibold">Due</span>
                     </div>
-                    <p-calendar [style]="sideBarCalendarStyle" id="due" [iconDisplay]="'input'" appendTo="body"
-                        [showIcon]="true" inputId="icondisplay" class="input input-bordered w-full max-w-xs" />
+                    <p-calendar [style]="sideBarCalendarStyle" formControlName="dueDate" id="due"
+                        [iconDisplay]="'input'" appendTo="body" [showIcon]="true" inputId="icondisplay"
+                        class="input input-bordered w-full max-w-xs" />
                 </label>
                 <label class="form-control w-full max-w-xs">
                     <div class="label">
                         <span class="label-text font-semibold">Priority</span>
                     </div>
-                    <select class="select select-bordered w-full max-w-xs">
+                    <select formControlName="priority" class="select select-bordered w-full max-w-xs">
                         @for (item of priorityOptions; track $index) {
                         <option [value]="item">{{item}}</option>
                         }
@@ -84,18 +92,18 @@
                     <div class="label">
                         <span class="label-text font-semibold">Status</span>
                     </div>
-                    <select class="select select-bordered w-full max-w-xs">
+                    <select formControlName="status" class="select select-bordered w-full max-w-xs">
                         @for (item of stateOptions; track $index) {
                         <option [value]="item">{{item}}</option>
                         }
                     </select>
                 </label>
                 <div class="flex mt-3 gap-2 w-full">
-                    <button class="btn btn-active btn-ghost w-[50%]">SAVE</button>
+                    <button class="btn btn-active btn-ghost w-[50%]" (click)="updateTaskById()">SAVE</button>
                     <button class="btn btn-neutral w-[50%]"
                         (click)="sidebar.set(false); reload.set(false)">CANCEL</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

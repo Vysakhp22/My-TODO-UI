@@ -76,4 +76,12 @@ export class TaskListViewComponent {
     }
   }
 
+  public onDeleteTask(taskId: string) {
+    this.taskService.deleteTaskAsync(taskId).subscribe({
+      next: () => {
+        this.getAllTasks();
+      }
+    });
+  }
+
 }

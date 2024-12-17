@@ -44,7 +44,7 @@ export class TaskListComponent {
     status: new FormControl<ETaskState | null>(ETaskState.Pending, [Validators.required]),
   });
 
-  private updateTask = new FormGroup({
+  public updateTask = new FormGroup({
     task: new FormControl('', [Validators.required]),
     dueDate: new FormControl<Date | null>(new Date(), [Validators.required]),
     priority: new FormControl<EPriorityValue | null>(EPriorityValue.Medium, [Validators.required]),
@@ -79,7 +79,16 @@ export class TaskListComponent {
           priority: EPriorityValue.Medium,
           status: ETaskState.Pending
         });
-        this.reload.set(false);
+         // After adding task, reload will be true after the accordion is closed need to reset it to false for next time
+        setTimeout(() => {
+          this.reload.set(false);
+        });
+      }
+      // After update task, reload will be true after the sidebar is closed need to reset it to false for next time
+      if (this.sidebar()) {
+        setTimeout(() => {
+          this.reload.set(false);
+        });
       }
     }, { allowSignalWrites: true });
   }
@@ -137,6 +146,7 @@ export class TaskListComponent {
           this.toast.showToast().success('Task updated successfully');
           this.updateTask.reset();
           this.reload.set(true);
+          this.itemEditId.set('');
           this.sidebar.set(false);
         },
         error: (err: Error) => {
