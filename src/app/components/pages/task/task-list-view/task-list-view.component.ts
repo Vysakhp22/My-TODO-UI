@@ -5,6 +5,7 @@ import { Tag, TagModule } from 'primeng/tag';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '@services/task.service';
 import { ConfigData } from '@services/configdata.service';
+import { ToastService } from '@services/toast.service';
 @Component({
   selector: 'app-task-list-view',
   standalone: true,
@@ -28,7 +29,8 @@ export class TaskListViewComponent {
 
   constructor(
     private taskService: TaskService,
-    private configData: ConfigData
+    private configData: ConfigData,
+    private toast: ToastService
   ) {
     effect(() => {
       if (this.reload()) {
@@ -77,9 +79,14 @@ export class TaskListViewComponent {
   }
 
   public onDeleteTask(taskId: string) {
+    const toastService = this.toast.showToast();
     this.taskService.deleteTaskAsync(taskId).subscribe({
       next: () => {
+        toastService.success('Task deleted successfully');
         this.getAllTasks();
+      },
+      error: (err: Error) => {
+        toastService.error(err);
       }
     });
   }
