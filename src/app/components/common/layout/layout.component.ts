@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -10,10 +10,11 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
-
+  private router: Router = inject(Router);
   protected logOut(): void {
     localStorage.removeItem('token');
     localStorage.clear();
+    this.router.navigateByUrl('/auth/login');
   }
 
 }
